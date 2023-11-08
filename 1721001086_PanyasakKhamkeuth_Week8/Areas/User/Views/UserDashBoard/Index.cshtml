@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .con1 {
+            display: flex;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+
+        /* Menu bên trái */
+        .sidebar {
+            width: 200px;
+            background: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .sidebar ul li {
+                    margin: 10px 0;
+                }
+
+                    .sidebar ul li a {
+                        text-decoration: none;
+                        color: #fff;
+                        display: flex;
+                        align-items: center;
+                        padding: 10px;
+                        transition: background 0.3s;
+                    }
+
+                        .sidebar ul li a.active {
+                            background: #00FF00; /* Màu nền xanh cho mục menu active */
+                        }
+                        .sidebar ul li a:hover {
+                            background: #555;
+                        }
+
+        /* iframe bên phải */
+        .iframe-container {
+            flex: 1;
+            padding: 20px;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        /* Icon style */
+        .icon {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fuild con1">
+        <!-- Menu bên trái -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="/User/UserMagement/Index" target="iframe"><i class="fas fa-user icon"></i> Profile</a></li>
+                <li><a href="/Identity/Account/Manage/Email" target="iframe"><i class="fas fa-envelope icon"></i> Email</a></li>
+                <li><a href="/Identity/Account/Manage/ChangePassword" target="iframe"><i class="fas fa-key icon"></i> Change Password</a></li>
+            </ul>
+        </div>
+
+        <!-- iframe bên phải -->
+        <div class="iframe-container">
+            <iframe id="myIframe" name="iframe" style="width: 100%; height: 100%; border: none;" src="/User/UserMagement/Index"></iframe>
+        </div>
+    </div>
+</body>
+
+
+</html>
+
+<script>
+    var iframe = document.querySelector('iframe[name="iframe"]');
+    iframe.addEventListener('load', function () {
+        var iframeDocument = iframe.contentWindow.document;
+        var manageNav = iframeDocument.querySelector('ul.nav-pills.flex-column');
+
+        // Kiểm tra xem trang hiện tại có phải là trang ChangePassword hoặc Email không
+        if (iframeDocument.location.href.indexOf('/Identity/Account/Manage/ChangePassword') !== -1 ||
+            iframeDocument.location.href.indexOf('/Identity/Account/Manage/Email') !== -1) {
+            // Ẩn ManageNav trên cả hai trang ChangePassword và Email
+            manageNav.style.display = 'none';
+        } else {
+            // Hiển thị ManageNav trên các trang khác
+            manageNav.style.display = 'block';
+        }
+
+        // Lấy lại danh sách các mục menu sau khi tải trang
+        var sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+
+        sidebarLinks.forEach(function (link) {
+            link.addEventListener('click', function () {
+                // Loại bỏ lớp CSS 'active' khỏi tất cả các mục menu
+                sidebarLinks.forEach(function (item) {
+                    item.classList.remove('active');
+                });
+
+                // Thêm lớp CSS 'active' cho mục menu hiện tại
+                link.classList.add('active');
+            });
+        });
+    });
+</script>

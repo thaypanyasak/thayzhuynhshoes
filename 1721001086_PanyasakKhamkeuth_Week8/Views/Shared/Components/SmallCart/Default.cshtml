@@ -1,0 +1,108 @@
+﻿<style>
+    .cart-preview-container {
+        max-width: 300px; /* Điều chỉnh giá trị max-width tùy theo nhu cầu */
+        max-height: 500px;
+        overflow: hidden;
+    }
+
+    .cart-preview-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 1000px; /* Điều chỉnh giá trị max-height tùy theo nhu cầu */
+        overflow-y: auto
+    }
+
+    .cart-preview-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee; /* Add a border between items */
+    }
+
+    .cart-preview-item-image img {
+        width: 60px;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .cart-preview-item-details {
+        flex: 1;
+        padding-left: 10px;
+    }
+
+    .cart-preview-item-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .cart-preview-item-info {
+        display: flex;
+        justify-content: space-between; /* Align items to both ends */
+        font-size: 14px;
+    }
+
+    .cart-preview-item-price {
+        color: #e74c3c;
+        margin-left: auto; /* Push the price to the right */
+    }
+
+    .cart-preview-total {
+        display: flex;
+        justify-content: space-between; /* Align items to both ends */
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .cart-preview-total-label {
+        color: #333;
+    }
+
+    .cart-preview-total-amount {
+        color: #e74c3c;
+    }
+
+    .view-cart-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .view-cart-button:hover {
+            background-color: #2980b9;
+        }
+</style>
+
+<div class="cart-preview-container">
+    <ul class="cart-preview-items">
+        @foreach (var item in Model.DsGioHang)
+        {
+            <li class="cart-preview-item">
+                <div class="cart-preview-item-image">
+                    <img src="@item.SanPham.ImageUrl" alt="@item.SanPham.Name">
+                </div>
+                <div class="cart-preview-item-details">
+                    <h5 class="cart-preview-item-name">@item.SanPham.Name</h5>
+                    <div class="cart-preview-item-info">
+                        <span class="cart-preview-item-price">@String.Format("{0:0,0}", item.SanPham.Price) VND</span>
+                        <span class="cart-preview-item-quantity"> x @item.Quantity</span>
+                    </div>
+                </div>
+            </li>
+        }
+        <div class="cart-preview-total">
+            <span class="cart-preview-total-label">Total:</span>
+            <span class="cart-preview-total-amount">@String.Format("{0:0,0}", Model.TotalPrice) VND</span>
+        </div>
+    </ul>
+</div>
+
+<a style="margin-top:10px" asp-area="User" asp-controller="GioHang" asp-action="Index" class="view-cart-button">View Cart</a>

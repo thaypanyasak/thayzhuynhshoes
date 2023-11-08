@@ -1,0 +1,110 @@
+﻿@model NhaCungCap
+@{
+    Layout = null; // Loại bỏ Layout cho trang này
+}
+<link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
+<link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/style.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-end.css" type="text/css">
+
+<h2 class="text-center" style="padding-bottom:30px">ADMIN DASHBOARD</h2>
+<div class="container-fuild">
+    <h2>Danh sách nhà cung cấp</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên nhà cung cấp</th>
+                <th>Địa chỉ</th>
+                <th>Số điện thoại</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.NhaCungCap)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Address</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info" style="background-color: #00FF00; border:none">Edit</a>
+                        <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-info" style="background-color: #00FF00; border:none">Detail</a>
+                        <a onclick="xoa(@item.Id, this)" class="btn btn-danger text-light" style="background-color: #00FF00; border:none">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <a asp-controller="NhaCungCap" asp-action="Create" class="btn btn-primary" style="background-color: #00FF00; border:none">Thêm mới</a>
+    </div>
+
+    <style>
+        .button-container {
+            margin-bottom: 10px; /* Add some margin between buttons */
+        }
+    </style>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function xoa(id, row) {
+        Swal.fire({
+            title: 'Xác nhận xóa',
+            text: 'Bạn có chắc chắn muốn xóa nhà cung cấp này này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gửi yêu cầu xóa đến máy chủ
+                $.ajax({
+                    url: `NhaCungCap/DeleteConfirm/${id}`,
+                    type: 'POST',
+                    success: function (data) {
+                        // Xóa hàng từ bảng sau khi xóa thành công
+                        row.closest('tr').remove();
+
+                        // Hiển thị thông báo xóa thành công
+                        Swal.fire(
+                            'Xóa thành công',
+                            'Nhà sản xuất đã được xóa.',
+                            'success'
+                        )
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        Swal.fire(
+                            'Lỗi',
+                            'Có lỗi xảy ra khi xóa sản phẩm.',
+                            'error'
+                        )
+                    }
+                });
+            }
+        })
+    }
+</script>
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.nice-select.min.js"></script>
+<script src="~/js/jquery.nicescroll.min.js"></script>
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+<script src="~/js/jquery.countdown.min.js"></script>
+<script src="~/js/jquery.slicknav.js"></script>
+<script src="~/js/mixitup.min.js"></script>
+<script src="~/js/owl.carousel.min.js"></script>
+<script src="~/js/main.js"></script>
+<script src="~/js/font-end.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>

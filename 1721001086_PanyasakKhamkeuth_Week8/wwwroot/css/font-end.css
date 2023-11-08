@@ -1,0 +1,68 @@
+body{
+    font-family: "Nunito Sans", sans-serif;
+}
+.login-box{
+    background-color: #fff;
+    color: #8d8d8d;
+    font-family: Helvetica;
+    font-size: 14px;
+    margin: auto;
+    max-width: 380px;
+    padding: 28px;
+    text-align: left;
+}
+#login{
+    background-color: #000;
+    border: 1px solid #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+}
+#registed{
+    background-color: #000;
+    border: 1px solid #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+}
+.form-check{
+    display: flex;
+    justify-content: space-between;
+}
+.forgot{
+    color: #bcbcbc;
+}
+.forgot:hover{
+    color: #bcbcbc;
+}
+.signup{
+    text-decoration: underline;
+    font-size: 15px;
+    color: #111;    
+}
+.signup:hover{
+    color: #111;    
+}
+.text-signup{
+    font-size: 15px !important;
+    color: #bcbcbc !important; 
+}
+input::placeholder{
+    color: #bcbcbc !important;
+    font-family: "Nunito Sans", sans-serif;
+}
+.gender{
+    display: flex;
+    justify-content: space-between;
+}
+.solgan-signup{
+    text-align: center;
+    color: #bcbcbc;
+    font-size: 15px !important;
+}
+.hero_text h2{
+    color: #111111;
+    font-weight: 700;
+    line-height: 50px;
+    transition: all, 0.6s;
+}

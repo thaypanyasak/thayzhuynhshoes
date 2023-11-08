@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null; // Loại bỏ Layout cho trang này
+}
+<link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
+<link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/style.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-end.css" type="text/css">
+<h2>Category Details</h2>
+<table class="table">
+    <tr>
+        <th>ID:</th>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <th>Tên thể loại:</th>
+        <td>@Model.Name</td>
+    </tr>
+     <tr>
+        <th>Ngày tạo:</th>
+        <td>@Model.DateCreated.ToString("yyyy-MM-dd HH:mm:ss")</td>
+    </tr>
+    @* <tr>
+        <th>Hình ảnh :</th>
+        <td>
+            <img src="~/images/@Model.ImageUrl" alt="Category Image" width="100">
+        </td>
+    </tr> *@
+
+    <a asp-action="Index" class="btn btn-danger" style="width:100px">Quay lại</a>
+</table>
+
+<a asp-action="Index" class="btn btn-primary">Trang chủ</a>
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.nice-select.min.js"></script>
+<script src="~/js/jquery.nicescroll.min.js"></script>
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+<script src="~/js/jquery.countdown.min.js"></script>
+<script src="~/js/jquery.slicknav.js"></script>
+<script src="~/js/mixitup.min.js"></script>
+<script src="~/js/owl.carousel.min.js"></script>
+<script src="~/js/main.js"></script>
+<script src="~/js/font-end.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>

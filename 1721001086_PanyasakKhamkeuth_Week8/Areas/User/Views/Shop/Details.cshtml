@@ -1,0 +1,472 @@
+﻿@model GioHang
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Zk6QvE7Nq9VI4vnj5qyqjazwYlV3m6tKGOgocLk9lGme5Sd" crossorigin="anonymous">
+<style>
+    .product__item__text .rating i.fas.fa-star {
+        color: #FFA500; /* Màu cam đậm */
+        border-color: #FFA500;
+    }
+
+    .product__item__text .rating i.far.fa-star {
+        color: #FFA500; /* Màu cam đậm */
+        border-color: #FFA500;
+    }
+
+</style>
+<!-- Shop Details Section Begin -->
+<form method="post" onsubmit="return validateSizeSelection()">
+    <section class="shop-details">
+        <div class="product__details__pic">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <ul class="nav nav-tabs" role="tablist">
+                            @foreach (var secondaryImage in Model.SecondaryImages)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-@secondaryImage.Id" role="tab">
+                                        <div class="product__thumb__pic set-bg">
+                                            <img src="@secondaryImage.ImageUrl" alt="Secondary Image" style="width: 130px;">
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
+                                    <div class="product__thumb__pic set-bg" data-setbg="@Model.SanPham.ImageUrl" id="video-thumbnail">
+                                        <i class="fa fa-play"></i>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-9">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab-@Model.SanPham.Id" role="tabpanel">
+                                <div class="product__details__pic__item">
+                                    <img src="@Model.SanPham.ImageUrl" alt="Product Image" width="800">
+                                </div>
+                            </div>
+                            @foreach (var secondaryImage in Model.SecondaryImages)
+                            {
+                                <div class="tab-pane" id="tab-@secondaryImage.Id" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="@secondaryImage.ImageUrl" alt="Secondary Image" width="800">
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-4" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <video id="productVideo" width="500" loop>
+                                            <source src="@Model.SanPham.VideoUrl" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="product__details__content">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="product__details__text">
+                            <h4>@Model.SanPham.Name</h4>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                                <span> - 5 Reviews</span>
+                            </div>
+                            <h3>@string.Format("{0:N0}", Model.SanPham.Price) VND </h3>
+                            <p>
+                                @Model.SanPham.Description
+                            </p>
+                            <div class="product__details__option">
+                                <div class="product__details__option__size">
+                                    <span>Size:</span>
+                                    <label for="40">
+                                        41
+                                        <input asp-for="Size" type="radio" id="40" name="Size" value="41">
+                                    </label>
+                                    <label for="41">
+                                        42
+                                        <input asp-for="Size" type="radio" id="41" name="Size" value="42">
+                                    </label>
+                                    <label for="43">
+                                        43
+                                        <input asp-for="Size" type="radio" id="43" name="Size" value="43">
+                                    </label>
+                                    <label for="44">
+                                        44
+                                        <input asp-for="Size" type="radio" id="44" name="Size" value="44">
+                                    </label>
+                                </div>
+                                <div class="product__details__option__color">
+                                    <span>Color:</span>
+                                    <label class="c-1" for="sp-1">
+                                        <input type="radio" id="sp-1">
+                                    </label>
+                                    <label class="c-2" for="sp-2">
+                                        <input type="radio" id="sp-2">
+                                    </label>
+                                    <label class="c-3" for="sp-3">
+                                        <input type="radio" id="sp-3">
+                                    </label>
+                                    <label class="c-4" for="sp-4">
+                                        <input type="radio" id="sp-4">
+                                    </label>
+                                    <label class="c-9" for="sp-9">
+                                        <input type="radio" id="sp-9">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="product__details__cart__option">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input asp-for="Quantity" value="@Model.Quantity" type="number" value="1"
+                                               class="form-control" min="1" max="10" step="1" data-decimals="0" required>
+                                        <span class="fa fa-angle-up dec qtybtn"></span>
+                                        <span class="fa fa-angle-down inc qtybtn"></span>
+                                    </div>
+                                </div>
+                                <button type="submit" class="primary-btn"><span>ADD TO CART</span></button>
+                            </div>
+                            <div class="product__details__btns__option">
+                                <a href="#" id="addToFavorites"><i class="fa fa-heart"></i> add to wishlist</a>
+                                <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
+                            </div>
+                            <div class="product__details__last__option">
+                                <h5><span>Guaranteed Safe Checkout</span></h5>
+                                <img src="~/img/shop-details/details-payment.png" alt="">
+                                <ul>
+                                    
+                                    <li>
+                                        <span>Categories:</span>
+                                        @if (ViewBag.danhmuc != null)
+                                        {
+                                            bool isFirst = true;
+                                            foreach (var category in ViewBag.danhmuc)
+                                            {
+                                                if (!isFirst)
+                                                {
+                                                    <span>,</span>
+                                                }
+                                                <a>@category.Theloai.Name</a>
+                                                isFirst = false;
+                                            }
+                                        }
+                                    </li>
+                                    <li><span>Company:</span>
+                                        @foreach (var nhaCungCap in Model.NhaCungCaps)
+                                        {
+                                            <a>@nhaCungCap.Name</a>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+                                       role="tab">Description</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">
+                                        Customer
+                                        Previews(5)
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">
+                                        Additional
+                                        information
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <p class="note">
+                                            Nam tempus turpis at metus scelerisque placerat nulla deumantos
+                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
+                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
+                                            pharetras loremos.
+                                        </p>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>
+                                                A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.
+                                            </p>
+                                            <p>
+                                                As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during it’s early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.
+                                            </p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>
+                                                Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>
+                                                A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.
+                                            </p>
+                                            <p>
+                                                As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during it’s early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.
+                                            </p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>
+                                                Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-7" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <p class="note">
+                                            Nam tempus turpis at metus scelerisque placerat nulla deumantos
+                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
+                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
+                                            pharetras loremos.
+                                        </p>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>
+                                                A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.
+                                            </p>
+                                            <p>
+                                                As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during it’s early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.
+                                            </p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>
+                                                Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Details Section End -->
+    <!-- Related Section Begin -->
+    <section class="related spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="related-title">Related Product</h3>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var product in ViewBag.RandomSanPhams)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg">
+                                <img src="@product.ImageUrl"> <!-- Sử dụng URL hình ảnh của sản phẩm -->
+                                <span class="label">New</span>
+                                <ul class="product__hover">
+                                    <li><a href="#"><img src="~/img/icon/heart.png" alt=""></a></li>
+                                    <li><a href="#"><img src="~/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                    <li><a href="#"><img src="~/img/icon/search.png" alt=""></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6>@product.Name</h6> <!-- Hiển thị tên sản phẩm -->
+                                <a asp-action="Details" asp-route-sanphamId="@product.Id" class="add-cart">+ Add To Cart</a>
+                                <div class="rating">
+                                    @for (var i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= product.Rating)
+                                        {
+                                            <i class="fas fa-star"></i> <!-- Hiển thị số sao tương ứng với xếp hạng -->
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-star"></i>
+                                        }
+                                    }
+                                </div>
+                                <h5>@String.Format("{0:0,0}", product.Price) VND</h5> <!-- Hiển thị giá sản phẩm -->
+                                <div class="product__color__select">
+                                    <!-- Hiển thị các tùy chọn màu sắc hoặc những gì bạn muốn hiển thị -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+</form>
+<!-- Related Section End -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <script>
+    function validateSizeSelection() {
+        var sizeInputs = document.querySelectorAll('input[name="Size"]');
+        var selectedSize = false;
+
+        for (var i = 0; i < sizeInputs.length; i++) {
+            if (sizeInputs[i].checked) {
+                selectedSize = true;
+                break;
+            }
+        }
+
+        if (!selectedSize) {
+            alert('Please select a size.');
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var videoThumbnail = document.getElementById('video-thumbnail');
+        var videoElement = document.getElementById('productVideo');
+
+        if (videoThumbnail && videoElement) {
+            videoThumbnail.addEventListener('click', function () {
+                if (videoElement.paused) {
+                    videoElement.play();
+                } else {
+                    videoElement.pause();
+                }
+            });
+        }
+    });
+
+    $("#addToFavorites").click(function () {
+        // Đoạn mã xử lý khi người dùng nhấp vào liên kết "Add to Wishlist"
+        var sanphamId = @Model.SanPham.Id; // Lấy ID của sản phẩm từ model
+
+        $.ajax({
+            type: "POST",
+            url: "/User/FavorProduct/AddToFavorites",
+            data: { sanphamId: sanphamId },
+            success: function (data) {
+                if (data.success) {
+                    // Sử dụng SweetAlert2 để hiển thị thông báo thành công và tự động đóng sau 2 giây
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Product added to your wishlist!',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                        timer: 2000, // 2000 milliseconds (2 seconds)
+                        timerProgressBar: true,
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            // Xử lý sau khi SweetAlert2 tự động đóng
+                            window.location.href = "/User/FavorProduct/Index";
+                        }
+                    });
+                }
+            }
+        });
+    });
+    $("#addToCart").click(function () {
+        if (validateSizeSelection()) {
+            // Thực hiện xử lý khi đã chọn size và nhấp vào nút "Add to Cart"
+            var quantity = $("#Quantity").val();
+            // Tiếp tục xử lý của nút "Add to Cart" ở đây
+        }
+    });
+    </script>
+    <script>
+        var proQty = $('.pro-qty');
+    proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
+    proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
+    proQty.on('click', '.qtybtn', function () {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) - 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 0) {
+                var newVal = parseFloat(oldValue) + 1;
+            } else {
+                newVal = 0;
+            }
+        }
+        $button.parent().find('input').val(newVal);
+    });
+    </script>
+

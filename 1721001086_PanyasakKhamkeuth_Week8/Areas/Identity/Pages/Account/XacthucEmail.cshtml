@@ -1,0 +1,84 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Xác nhận đăng ký";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            
+        }
+
+        .con {
+            width: 800px;
+            height: 450px;
+            border-radius: 10px;
+            padding: 20px 40px;
+            text-align: center;
+            box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+            background-color: #fff;
+            margin-top: 50px;
+        }
+
+            .con img {
+                width: 128px;
+                height: 128px;
+            }
+
+        .con h1 {
+            margin-top:45px;
+            color: #535353;
+            font-size: 40px;
+            font-weight:bold;
+        }
+
+        .con p {
+            color: #a0a0a0;
+        }
+
+        .con .confirm-link {
+            text-decoration: none;
+            color: #fff;
+            padding: 12px;
+            background-color: #000000;
+            border-radius: 5px;
+            margin: 30px 0;
+            display: block;
+            box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.16);
+        }
+
+            .confirm-link:hover {
+                background-color: #ff4000;
+            }
+
+        .con .thank-you {
+            margin-top: 180px;
+            color: #a0a0a0;
+        }
+
+        .con .brand {
+            color: #000000;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bo1">
+    <div class="container con">
+        <img src="https://cdn-icons-png.flaticon.com/128/1161/1161751.png" alt="Logo" />
+        <h1>Xác nhận Email</h1>
+        <p>WELCOME TO THAY-HUYNH BALLER- Hãy nhấn vào nút dưới để xác nhận Email.</p>
+        @if (Model.DisplayConfirmAccountLink)
+        {
+            <a class="confirm-link" href="@Model.EmailConfirmationUrl">Nhấn vào đây để xác nhận tài khoản của bạn</a>
+        }
+        <p class="thank-you">Thế giới giày thể thao <span class="brand">THAY-HUYNH BALLER</span> THANK YOU FOR SUPPORT</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+﻿@model List<FavorProduct>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+<style>
+    .rating i.fas.fa-star {
+        color: #FFA500; /* Màu cam đậm */
+        border-color: #FFA500;
+    }
+
+    .rating i.far.fa-star {
+        color: #FFA500; /* Màu cam đậm */
+        border-color: #FFA500;
+    }
+
+    .shopping__cart__table table tbody tr td.cart__close i {
+        margin-left: 15px;
+    }
+</style>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Favor Products</h4>
+                    <div class="breadcrumb__links">
+                        <a asp-area="Customer" asp-controller="Home">Home</a>
+                        <span>Favor Products</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="shopping-cart spad">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Rating</th>
+                                <th> </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var favorProduct in Model)
+                            {
+                                <tr id="product-@favorProduct.SanPhamId" class="product-item">
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="@favorProduct.SanPham.ImageUrl" alt="" width="120px">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h5>@favorProduct.SanPham.Name</h5>
+        
+                                            <hr style="width: 140px;margin-right:200px">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>@String.Format("{0:0,0}", favorProduct.SanPham.Price) VND </h5>
+                                    </td>
+                                    <td>
+                                        <div class="rating">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                @if (i <= favorProduct.SanPham.Rating)
+                                                {
+                                                    <i class="fas fa-star"></i> <!-- Star is filled, color yellow -->
+                                                }
+                                                else
+                                                {
+                                                    <i class="far fa-star"></i> <!-- Star is outlined, color gray -->
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Shop" asp-action="Details" asp-route-sanphamId="@favorProduct.SanPham.Id" class="add-cart">+ Add To Cart</a>
+                                    </td>
+                                    <td class="cart__close" style="margin-left:20px">
+                                        <button style="border:none; border-radius:50%;" onclick="xoaKhoiDanhSachYeuThich(@favorProduct.SanPhamId)"><i class="fa fa-close"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function xoaKhoiDanhSachYeuThich(sanphamId) {
+            Swal.fire({
+                title: 'Xác nhận xóa sản phẩm khỏi danh sách yêu thích?',
+                text: 'Bạn có chắc muốn xóa sản phẩm này khỏi danh sách yêu thích?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/User/FavorProduct/Delete',
+                        type: 'POST',
+                        data: { sanphamId: sanphamId },
+                        success: function (data) {
+                            if (data.success) {
+                                // Xóa sản phẩm khỏi danh sách yêu thích thành công
+                                Swal.fire('Đã xóa sản phẩm khỏi danh sách yêu thích!', '', 'success');
+                                // Tìm phần tử chứa sản phẩm và xóa nó khỏi giao diện người dùng
+                                var productItem = $('#product-' + sanphamId);
+                                productItem.remove();
+                            } else {
+                                Swal.fire('Lỗi', data.message, 'error');
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Lỗi', 'Đã xảy ra lỗi khi thực hiện xóa sản phẩm khỏi danh sách yêu thích.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+
+

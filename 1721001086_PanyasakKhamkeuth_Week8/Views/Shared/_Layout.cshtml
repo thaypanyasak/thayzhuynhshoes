@@ -1,0 +1,408 @@
+﻿@using Microsoft.Extensions.DependencyInjection;
+@using Microsoft.AspNetCore.Identity;
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>THAY-HUYNH | BALLER</title>
+    <link rel="icon" href="~/jd.png" type="image/x-icon">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-end.css" type="text/css">
+    
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+</head>
+<style>
+    /* CSS for the cart preview */
+    .header__logo {
+        padding: 10px 0;
+    }
+.cart-preview {
+        position: absolute;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 320px;
+        max-height: 500px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1000;
+
+}
+
+.cart-preview-content ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.cart-preview-content ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-preview-content ul li:last-child {
+    border-bottom: none;
+}
+
+.cart-preview-content ul li img {
+    max-width: 100px;
+    margin-right: 10px;
+}
+
+.cart-preview-content ul li span {
+    font-weight: bold;
+}
+
+.cart-preview-content ul li .price {
+    color: #e74c3c;
+}
+
+/* CSS for the cart preview animation */
+keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+
+    .search-container {
+        display: none;
+        position: absolute;
+        top: 110px;
+        right: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 25px; /* Sử dụng góc bo tròn lớn hơn */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+        width: 250px;
+        padding: 10px; /* Tăng khoảng cách nội dung từ biên trong ô nhập */
+    }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            border: none;
+            outline: none;
+            padding: 5px;
+            flex: 1;
+        }
+
+    .search-icon {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .close-icon {
+        font-size: 20px;
+        cursor: pointer;
+        position: absolute;
+        right: 10px; /* Điều chỉnh khoảng cách từ bên phải */
+        top: 10px; /* Điều chỉnh khoảng cách từ đỉnh */
+        color: #888;
+    }
+
+</style>
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a asp-controller="Shop" asp-action="SignIn">Sign In</a>
+                <a asp-controller="Shop" asp-action="SignUp">Sign Up </a>
+            </div>
+            <div class="offcanvas__top__hover">
+                <span>Usd <i class="arrow_carrot-down"></i></span>
+                <ul>
+                    <li>USD</li>
+                    <li>EUR</li>
+                    <li>USD</li>
+                </ul>
+            </div>
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="~/images/icon/search.png" alt=""></a>
+            <a asp-area="Customer" asp-controller="FavorProduct" asp-action="Index"><img src="~/images/icon/heart.png" alt=""></a>
+            <a asp-area="Customer" asp-controller="GioHang" asp-action="Index"><img src="~/images/icon/cart.png" alt=""> <span style="color:red">@await Component.InvokeAsync("QuantityGioHang")</span></a>
+            <div class="price">@await Component.InvokeAsync("SumMoney", new { gioHangViewModel = Model })</div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <partial name="_LoginPartial" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a asp-area="User" asp-controller="Home"><img src="~/img/logo/logo/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="@Html.Raw(ViewBag.active == 1 ? "active" : "")"><a asp-area="User" asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="@Html.Raw(ViewBag.active == 2 ? "active" : "")"><a asp-area="User" asp-controller="Shop" asp-action="Index">Shop</a></li>
+                            @*  <vc:the-loai></vc:the-loai>  *@
+                            <li class="@Html.Raw(ViewBag.active == 3 ? "active" : "")"><a asp-area="User" asp-controller="Blog" asp-action="Index">Blog</a></li>
+                            <li class="@Html.Raw(ViewBag.active == 4 ? "active" : "")"><a asp-area="User" asp-controller="Contact" asp-action="Index">Contact</a></li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a class="search-icon" id="searchIcon"><img src="~/img/icon/search.png" alt=""></a>
+                        
+                        <a asp-area="User" asp-controller="FavorProduct" asp-action="Index">
+                            <img src="~/img/icon/heart.png" alt="">
+                            <span style="top:6px; color:red" id="favorProductCount">
+                                @await Component.InvokeAsync("QuantityFavorProduct")
+                            </span>
+                        </a>
+                        <a asp-area="User" asp-controller="GioHang" asp-action="Index" id="cartLink">
+                            <img src="~/img/icon/cart.png" alt="" width="17px">
+                            <span style="color:red">@await Component.InvokeAsync("QuantityGioHang")</span>
+                        </a>
+                        <div class="price">@await Component.InvokeAsync("SumMoney", new { gioHangViewModel = Model })</div>
+                        <div id="cartPreview" class="cart-preview" style="display: none;">
+                            <div class="cart-preview-content">
+                                <ul>
+                                    @await Component.InvokeAsync("SmallCart", new { gioHangViewModel = Model })
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-container" id="searchContainer">
+                        <form asp-controller="Shop" asp-action="Index" method="get" id="searchForm">
+                            <input type="text" name="tag" id="searchInput" placeholder="Search...">
+                            <span class="close-icon" id="closeIcon">&times;</span>
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+
+                   
+
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+   
+            @RenderBody()
+
+    <!-- Footer Section Begin -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="~/img/logo/logo/logo.png" alt=""></a>
+                        </div>
+                        <p>The User is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="~/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>
+                            Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | Baller Store <i class="fa fa-heart-o"
+                                                                                aria-hidden="true"></i> by <a href="#" target="_blank">Khamkeuth - Nhật Huỳnh</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+    <!-- Search Begin -->
+    
+    <!-- Search End -->
+    <!-- Js Plugins -->
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/jquery.nicescroll.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/jquery.countdown.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/mixitup.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/font-end.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<!-- Thêm một tham số để kiểm tra khi chuột nằm trên cartPreview -->
+<script>
+    let isMouseOnCartPreview = false;
+    let previewHideTimeout; // Biến để lưu đối tượng timeout
+
+    const cartLink = document.getElementById('cartLink');
+    const cartPreview = document.getElementById('cartPreview');
+
+    // Function to show the cart preview
+    function showCartPreview() {
+        clearTimeout(previewHideTimeout); // Xóa timeout trước nếu có
+        cartPreview.style.display = 'block';
+    }
+
+    // Function to hide the cart preview with delay
+    function hideCartPreviewWithDelay() {
+        previewHideTimeout = setTimeout(() => {
+            if (!isMouseOnCartPreview) {
+                cartPreview.style.display = 'none';
+            }
+        }, 200); // Đặt thời gian trễ 1 giây (có thể điều chỉnh)
+    }
+
+    // Event listener for mouse enter on the cart link
+    cartLink.addEventListener('mouseenter', showCartPreview);
+
+    // Event listener for mouse leave on the cart link
+    cartLink.addEventListener('mouseleave', hideCartPreviewWithDelay);
+
+    // Event listener for mouse enter on the cart preview
+    cartPreview.addEventListener('mouseenter', () => {
+        isMouseOnCartPreview = true;
+        clearTimeout(previewHideTimeout); // Xóa timeout nếu chuột vào cartPreview
+    });
+
+    // Event listener for mouse leave on the cart preview
+    cartPreview.addEventListener('mouseleave', () => {
+        isMouseOnCartPreview = false;
+        hideCartPreviewWithDelay();
+    });
+    // JavaScript code
+    const searchIcon = document.getElementById("searchIcon");
+    const searchContainer = document.getElementById("searchContainer");
+    const closeIcon = document.getElementById("closeIcon");
+
+    searchIcon.addEventListener("click", function () {
+        searchIcon.style.display = "none";
+        searchContainer.style.display = "inline-block";
+        document.getElementById("searchInput").focus();
+    });
+
+    closeIcon.addEventListener("click", function () {
+        searchIcon.style.display = "inline-block";
+        searchContainer.style.display = "none";
+        document.getElementById("searchInput").value = ""; // Xóa nội dung ô nhập tìm kiếm khi đóng
+    });
+    // Sự kiện khi người dùng bấm Enter trong ô tìm kiếm
+    searchInput.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Ngăn chặn form gửi đi
+            const searchText = searchInput.value;
+            window.location.href = `/User/Shop/Index?tag=${searchText}`;
+        }
+    });
+
+</script>
+
+

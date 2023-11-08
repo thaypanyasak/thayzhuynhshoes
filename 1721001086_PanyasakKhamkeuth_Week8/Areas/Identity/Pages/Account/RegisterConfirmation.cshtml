@@ -1,0 +1,65 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Xác nhận Đăng ký";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            
+        }
+
+        .con {
+            background-color: #fff;
+            width: 750px;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+            text-align: center;
+            margin-top:20px;
+        }
+
+        .con h2 {
+            color: #535353;
+            font-weight:bold;
+            margin-top:20px;
+        }
+
+        .con p {
+            color: #a0a0a0;
+            margin: 15px 0;
+        }
+
+        .con .email-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+            .con .email-button:hover {
+                background-color: #ff4000;
+            }
+    </style>
+</head>
+<body class="bo1">
+    <div class="container con">
+        <img src="https://cdn-icons-png.flaticon.com/128/9727/9727446.png" alt=" " />
+        <h2>Xác nhận Đăng ký</h2>
+        <p>Cảm ơn bạn đã đăng ký. Vui lòng kiểm tra email của bạn để xác nhận và hoàn tất quá trình đăng ký.</p>
+        <p>Nếu bạn không nhận được email, hãy kiểm tra thư mục spam của bạn.</p>
+        <a class="email-button" href="mailto:@Model.Email">Mở Email</a>
+    </div>
+</body>
+</html>

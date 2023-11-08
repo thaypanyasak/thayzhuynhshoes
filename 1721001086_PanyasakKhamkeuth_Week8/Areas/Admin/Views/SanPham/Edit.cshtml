@@ -1,0 +1,157 @@
+﻿@model SanPham
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<style>
+    header{
+        display:none; 
+    }
+    footer{
+        display:none;
+    }
+
+    .form-edit {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+    }
+
+    .secondary-images img {
+        margin: 5px;
+    }
+
+    .dropdown-menu {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .form-edit img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        margin-right: 10px;
+    }
+</style>
+<div class="container">
+    <h2>Edit Product</h2>
+    <div class="form-edit">
+        <form asp-action="Edit" asp-controller="SanPham" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Product Name</label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Price</label>
+                <input asp-for="Price" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mainImage" class="control-label">Current Main Image</label>
+                <img src="@Model.ImageUrl" alt="Main Image" class="img-thumbnail" />
+                <input type="file" name="mainImage" class="form-control-file" />
+            </div>
+
+            <div class="form-group">
+                <label for="secondaryImages" class="control-label">Secondary Images</label>
+                @if (Model.Images != null && Model.Images.Any())
+                {
+                    <div class="secondary-images">
+                        @foreach (var image in Model.Images)
+                        {
+                            <img src="@image.ImageUrl" alt="Secondary Image" class="img-thumbnail" />
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>No secondary images available.</p>
+                }
+                <input type="file" name="secondaryImages" class="form-control-file" multiple />
+            </div>
+
+            <div class="form-group">
+                <label for="videoFile" class="control-label">Video File</label>
+                <input type="file" name="videoFile" class="form-control-file" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label">Rating</label>
+                <input asp-for="Rating" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="nhaCungCapId">Supplier</label>
+                <select class="form-control" id="nhaCungCapId" name="nhaCungCapId">
+                    @foreach (var nhaCungCap in ViewBag.nhaCungCaps)
+                    {
+                        <option value="@nhaCungCap.Id">@nhaCungCap.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="theloai">Product Categories</label>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Categories
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        @foreach (var item in ViewBag.theloai)
+                        {
+                            <div class="dropdown-item">
+                                <input type="checkbox" name="theloaii" value="@item.Id" class="form-check-input" id="categoryCheck_@item.Id">
+                                <label class="form-check-label" for="categoryCheck_@item.Id">@item.Name</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <button style="background-color: #00FF00; border:none" type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Initialize Bootstrap dropdown
+            $('#categoryDropdown').click(function () {
+                $('.dropdown-menu').toggleClass('show');
+            });
+        });
+    </script>
+}

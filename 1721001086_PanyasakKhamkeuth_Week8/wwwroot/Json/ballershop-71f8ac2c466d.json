@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "ballershop",
+  "private_key_id": "71f8ac2c466dff65aaa69ed34e435009e14af8f0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCrVRUrykUY+Y2A\nPL9eyMLTMpLTP8KFeW8IaDZp2ZiSzmTQtiWL+XuN9qn7qTSIOBhYjHnjKkBqESNm\nFxi2/gWLI0Xeum34kcgRzdHYHrZPKqIKY5IFHgJaH/lRBPcjjcRy211M1KSi45lT\nkHvzAIALUonfCcU9J80eCA6OW8LS4qD0AFPnqtWAdufjgKNYHSmUiWcd3McQAc+E\ncU+VhYLPrnl9FHq/L3ASn3o0GoIqUdN+4mRA1zfn5lEJHrlVMUCCIuA6pGkDScMy\nCEuma9FVCqfTU9Lg9t1sDzVLkiv7hQUbgQpl5IaWTrfWJHYktYqn3qmzltEI95ls\naSI9m05zAgMBAAECggEALQpKbP8ZCBY+hRozIss7MEMoxwEJdYY1Uqv2tf/edKVu\nalGf8DqvKORRzlcueKrqd4jCWB4Y3elQeXuT4zNHKMsmiIVQ+Jn2Uvvc8Ogt/ATU\noU+IqPC5JJEoPQzFnWKc5KbXUaXK/AlCGu4uL3UPtCpIFUqfv9JxQTZUAUeNIVvF\nX9c2v47Pv5Cv9GCuitPeer3DKDR85KKlGnbR2t9wq/DReYED/qbIOUNmwR0/mfKK\n3r998RYOmJsf0EpXZIf/55R/g16gbDzkUHK0Qzuh1XCjFyeDV61yIuK5CE4/ZC26\nOh0Vuf4j3ZheyRPyFJprZHmj0lfVdlR2myT6gMqpcQKBgQDSsNx4Xdc65F+cebFY\nLC6QNsFZRenrl3P8BqMcGh2v4uKvfD9HphN55NGy19egjjQfISz0LfP92Ees2DWB\nW/OgmI7+4SBt68FD9cjXgutgeYlLriNyyguUka3i3QKD+vKkn6R1PeaCiwl131l6\nZ3TiSYzkTI5+BGWtxNLgC8nP8QKBgQDQLWwUMxQJL4BsI7ejnslo3VX3qM5W8NZ9\ns2dEcsK3ZJFmyMUCuMfvbqWmyBYV2BXRLGxUBMV/m0q9m9tpbTPmfAmujGIzpc3s\n5dtWXKqO14+HE4jp0NEmcwW5a30UV012N7aTUAKBXp6A0ZysMLrlaUM97qvnURDV\nQqe+28JoowKBgQDJc5AqiteLmOcOj5ERVJVlEOXIfT/QIq0kshfte88c6NyEnFFJ\nKbN/nlkfHqAvBSkzBp6cDwA3nD/UNZrbSFdnG9fGPu2qDHxrhav23FhAk5TCRwvf\n6u4trSlNPLL2DNFKtNYjv/8SnOx7xwYgMqGg6GCNveGU/pFWGFblIIBjkQKBgBmf\n7bTS0L2Mtk8ZWmpuijY5QHK6uaNkA9L3OVfolGVEoM05G18JZbroMMXFzUolDhJw\nWGlDKRhbAikyvSBOC9xsGjj9GL1oxF9Lr+MChxAMIqOq2OiHBqen8uVvALd3Q5aw\npu2dJKHOBs6ufo2Hdgn1GgzOiyRvCxZlHQbWQCjnAoGAZYhrxqEU5dLIOrqDK6km\nzKlsMFbmUZptfbSWGXbYARydZ0H1fsELwQc7YiK2fKyxolTzWT8a1dItGZxluft5\ndDlJEy1oIO5Vy7I+Sq3S2+a+9SI3yoELo0VoX+MxMQo6lDeqCJdXbGehoCLmp6gY\ngQgPDFVQ3eAGTzu7fW31xcs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "thay-huynh@ballershop.iam.gserviceaccount.com",
+  "client_id": "116661033816909606546",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/thay-huynh%40ballershop.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

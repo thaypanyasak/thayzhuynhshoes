@@ -1,0 +1,106 @@
+﻿@model SanPham
+@{
+    Layout = null; // Loại bỏ Layout cho trang này
+}
+<link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
+<link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/style.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-end.css" type="text/css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+       
+
+        .table th {
+            width: 30%;
+            text-align: right;
+        }
+
+        .table td {
+            width: 70%;
+        }
+
+        .secondary-images img {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style=" text-align:center">Category Details</h2>
+
+    <table class="table">
+        <tr>
+            <th>ID:</th>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>Tên sản phẩm:</th>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
+            <th>Mô tả:</th>
+            <td>@Model.Description</td>
+        </tr>
+        <tr>
+            <th>Giá:</th>
+            <td>@Model.Price</td>
+        </tr>
+        <tr>
+            <th>Hình ảnh :</th>
+            <td>
+                <img src="@Model.ImageUrl" alt="Category Image" width="100">
+            </td>
+        </tr>
+        @if (Model.Images != null && Model.Images.Count > 0)
+        {
+            <tr>
+                <th>Secondary Images:</th>
+                <td>
+                    <div class="secondary-images">
+                        @foreach (var image in Model.Images)
+                        {
+                            <img src="@image.ImageUrl" alt="Secondary Image" width="100px">
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <a asp-action="Index" style="background-color: #00FF00; border:none" class="btn btn-primary">Trang chủ</a>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.nice-select.min.js"></script>
+<script src="~/js/jquery.nicescroll.min.js"></script>
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+<script src="~/js/jquery.countdown.min.js"></script>
+<script src="~/js/jquery.slicknav.js"></script>
+<script src="~/js/mixitup.min.js"></script>
+<script src="~/js/owl.carousel.min.js"></script>
+<script src="~/js/main.js"></script>
+<script src="~/js/font-end.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+</html>

@@ -1,0 +1,95 @@
+﻿@page
+@model ManagementPageModel
+@{
+    ViewData["Title"] = "Management Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            color: #fff;
+
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            background-color: #111;
+            color: #fff;
+        }
+
+        .card-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid #ccc; /* Đường kẻ ngăn cách dưới */
+            border-radius: 0; /* Loại bỏ bo tròn */
+            display: table-row;
+        }
+
+        .list-group a{
+            color: black;
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+            display: table-cell;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-decoration: none;
+        }
+
+            .list-group-item:last-child {
+                border-bottom: none; /* Loại bỏ đường kẻ ngăn cách dưới của mục cuối cùng */
+            }
+
+            .list-group-item:hover {
+                background-color: #333;
+            }
+
+            .list-group-item:last-child {
+                margin-bottom: 0;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container mt-3 pb-4" >
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Manage Page</h1>
+
+                        <div class="list-group">
+                            <a asp-area="Admin" asp-controller="DonHang" asp-action="Index" class="list-group-item list-group-item-action">1. Manage đơn hàng</a>
+                            <a asp-area="Admin" asp-controller="NhaCungCap" asp-action="Index" class="list-group-item list-group-item-action">2. Manage nhà cung cấp</a>
+                            <a asp-area="Admin" asp-controller="SanPham" asp-action="Index" class="list-group-item list-group-item-action">3. Manage sản phẩm</a>
+                            <a asp-area="Admin" asp-controller="TheLoai" asp-action="Index" class="list-group-item list-group-item-action">4. Manage thể loại</a>
+                            <a asp-area="Admin" asp-controller="BlogAdmin" asp-action="Index" class="list-group-item list-group-item-action">5. Manage Blog</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+

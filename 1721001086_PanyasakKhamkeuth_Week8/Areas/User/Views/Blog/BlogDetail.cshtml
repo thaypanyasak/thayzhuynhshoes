@@ -1,0 +1,160 @@
+﻿@model Blog
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+@{
+    ViewData["Title"] = "BlogDetail";
+}
+
+<!-- Blog Details Hero Begin -->
+<section class="blog-hero spad">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-9 text-center">
+                <div class="blog__hero__text">
+                    <h2>@Model.Title</h2>
+                    <ul>
+                        <li>By @Model.Author</li>
+                        <li>@Model.CreatedDate.ToString("dd MMMM, yyyy")</li>
+                        <li>8 Comments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Hero End -->
+<!-- Blog Details Section Begin -->
+<section class="blog-details spad">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-12">
+                <div class="blog__details__pic">
+                    <img src="@Model.ImageUrl" alt="@Model.Title">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="blog__details__content">
+                    <div class="blog__details__share">
+                        <span>share</span>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a></li>
+                            <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="blog__details__text">
+                        @Html.Raw(Model.Content)
+                    </div>
+                    <div class="blog__details__quote">
+                        <i class="fa fa-quote-left"></i>
+                        <p>
+                            “When designing an advertisement for a particular product many things should be
+                            researched like where it should be displayed.”
+                        </p>
+                        <h6>_ @Model.Author _</h6>
+                    </div>
+                    <div class="blog__details__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__author">
+                                    <div class="blog__details__author__pic">
+                                        <img src="~/img/blog/details/blog-author.jpg" alt="">
+                                    </div>
+                                    <div class="blog__details__author__text">
+                                        <h5>@Model.Author</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__tags">
+                                    <a href="#">#Fashion</a>
+                                    <a href="#">#Trending</a>
+                                    <a href="#">#2020</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog__details__btns">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <a href="" class="blog__details__btns__item">
+                                    <p><span class="arrow_left"></span> Previous Pod</p>
+                                    <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
+                                </a>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <a href="" class="blog__details__btns__item blog__details__btns__item--next">
+                                    <p>Next Pod <span class="arrow_right"></span></p>
+                                    <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog__details__comment">
+                        <h4>Leave A Comment</h4>
+                        <form id="contact-form" asp-controller="Message" asp-action="Index" asp-area="Admin" method="post">
+                            <div class="row">
+                                <div class="form-group col-lg-6 col-md-4">
+                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter your name">
+                                </div>
+                                <div class="form-group col-lg-6 col-md-4">
+                                    <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter your email">
+                                </div>
+                                <div class="form-group col-lg-12 text-center">
+                                    <textarea class="form-control" id="Messages" name="Messages" placeholder="Enter your message"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="sendMessageButton">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Section End -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- Add your JavaScript files here -->
+<!-- Example: <script src="~/js/bootstrap.min.js"></script> -->
+
+<script>
+    $(document).ready(function () {
+        $('#contact-form').submit(function (event) {
+            event.preventDefault();
+
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                url: '@Url.Action("Index", "Message", new { area = "Admin" })',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Message sent successfully!',
+                        showConfirmButton: true, // Hiển thị nút OK
+                        timer: 3500,
+                        willClose: function () {
+                            // Reset the form after a successful submission
+                            $('#contact-form')[0].reset();
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while sending the message. Please check the console for more details.',
+                    });
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,241 @@
+﻿
+
+@model GioHangViewModel
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a asp-area="Customer" asp-controller="Home">Home</a>
+                        <a asp-controller="Home" asp-action="Shop">Shop</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container-fluid m-5" style="width:93%" >
+       
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Size</th>
+                                <th>Quantity</th>
+                                
+                                <th>Total</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @foreach (var item in Model.DsGioHang)
+                            {
+                                <tr id="product-@item.Id" class="product-item">
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                            <img src="@item.SanPham.ImageUrl" alt="" width="120px">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6>@item.SanPham.Name</h6>
+                                        <h5>@String.Format("{0:0,0}", item.SanPham.Price) VND </h5>
+                                            <hr style="width: 140px;margin-right:200px">
+                                            @{
+                                                @await Component.InvokeAsync("ShoppingCart", new { gioHangItem = item })
+                                            }
+                                        
+                                    </div>
+                                </td>
+                                <td>
+                                        <h5>@item.Size</h5>
+                                </td>
+                                <td class="quantity__item">
+                                    <div class="quantity">
+                                            <div class="Input-Quantity1">
+                                                <a href="@Url.Action("Giam", "GioHang", new { giohangId = item.Id })" type="button" class="GIAM" data-giohangid="@item.Id" style="color:black">
+                                                    <i class="fas fa-minus"></i> <!-- Biểu tượng "Giảm" của Font Awesome -->
+                                                </a>
+
+                                                <input value="@item.Quantity" style="border: none;width: 30px; text-align:center">
+
+                                                <a href="@Url.Action("Tang", "GioHang", new { giohangId = item.Id })" class="TANG" data-giohangid="@item.Id" type="button" style="color:black">
+                                                    <i class="fas fa-plus"></i> 
+                                                </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                    <td class="cart__price">@String.Format("{0:0,0}", item.ProductPrice) VND</td>
+                                    <td class="cart__close">
+                                        @* <a href="@Url.Action("Xoa", "GioHang", new { giohangId = item.Id })" type="button">
+                                            <i class="fa fa-close"></i>
+                                        </a> *@
+
+                                        <button style="border:none; border-radius:50%; margin-left:45px" onclick="xoaSanPham(@item.Id)"><i class="fa fa-close"></i></button>
+
+                                    </td>
+                                    
+                            </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="#">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn update__btn">
+                            <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        @foreach (var item in Model.DsGioHang)
+                            {
+                            <li>@item.SanPham.Name <span>@String.Format("{0:0,0}", item.ProductPrice) VND </span>@await Component.InvokeAsync("QuantitySanpham", new { gioHangItem = item })</li>
+                            <hr />
+      
+                            }
+                        <li>Shipping fee <span> @String.Format("{0:0,0}" , Model.ShippingFee) VND</span></li>
+                        <li>Thuế <span> @String.Format("{0:0,0}" , Model.TaxAmount) VND</span></li>
+                        <li>Total <span>@String.Format("{0:0,0}", Model.HoaDon.Total) VND</span></li>
+                        </ul>
+                    <a asp-action="ThanhToan" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+    <script>
+    $(document).ready(function () {
+        // Xử lý sự kiện click trên nút "Giảm"
+        $('.GIAM[data-giohangid]').click(function (e) {
+            e.preventDefault(); // Ngăn chặn sự kiện mặc định của thẻ <a>
+            var giohangId = $(this).data('giohangid');
+            var quantityInput = $('#quantity-' + giohangId);
+
+            // Thực hiện yêu cầu Ajax để giảm số lượng sản phẩm và cập nhật giá trị trong input
+            $.ajax({
+                type: 'POST',
+                url: '/GioHang/Giam',
+                data: { giohangId: giohangId },
+                success: function (result) {
+                    if (result.success) {
+                        quantityInput.val(result.newQuantity);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
+        $('.Tang[data-giohangid]').click(function (e) {
+            e.preventDefault();
+            var giohangId = $(this).data('giohangid');
+            var quantityInput = $('#quantity-' + giohangId);
+
+            // Thực hiện yêu cầu Ajax để giảm số lượng sản phẩm và cập nhật giá trị trong input
+            $.ajax({
+                type: 'POST',
+                url: '/GioHang/Tang',
+                data: { giohangId: giohangId },
+                success: function (result) {
+                    if (result.success) {
+                        quantityInput.val(result.newQuantity);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        // Xử lý sự kiện click trên nút "Tăng" tương tự như trên
+        // ...
+    });
+    function adjustQuantity(giohangId, increment) {
+        var quantityInput = $('#quantity-' + giohangId);
+
+        $.ajax({
+            type: 'POST',
+            url: increment ? '/GioHang/Tang' : '/GioHang/Giam',
+            data: { giohangId: giohangId },
+            success: function (result) {
+                if (result.success) {
+                    quantityInput.val(result.newQuantity);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <script>
+        function xoaSanPham(giohangId) {
+            Swal.fire({
+                title: 'Xác nhận xóa sản phẩm?',
+                text: 'Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/User/GioHang/Xoa',
+                        type: 'POST',
+                        data: { giohangId: giohangId },
+                        success: function (data) {
+                            if (data.success) {
+                                // Xóa sản phẩm thành công
+                                Swal.fire('Đã xóa sản phẩm!', '', 'success');
+                                // Tìm phần tử chứa sản phẩm và xóa nó khỏi giao diện người dùng
+                                var productItem = $('#product-' + giohangId);
+                                productItem.remove();
+                            } else {
+                                Swal.fire('Lỗi', data.message, 'error');
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Lỗi', 'Đã xảy ra lỗi khi thực hiện xóa sản phẩm.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>

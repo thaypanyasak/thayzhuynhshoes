@@ -1,0 +1,173 @@
+﻿@model SanPham
+
+@{
+    ViewData["Title"] = "Upsert";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upsert SanPham</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        header {
+            display: none;
+        }
+
+        footer {
+            display: none;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+
+            .form-container h4 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                font-weight: bold;
+            }
+
+            .form-group input[type="file"] {
+                padding-top: 5px;
+            }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+            .checkbox-item input {
+                margin-right: 10px;
+            }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-back {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-container">
+            <h4>ADD NEW SANPHAM</h4>
+            <form asp-action="Upsert" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label for="Name">Product Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter product name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Description">Description</label>
+                    <input asp-for="Description" class="form-control" placeholder="Enter product description">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Price">Price</label>
+                    <input asp-for="Price" class="form-control" placeholder="Enter product price">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Rating">Rating</label>
+                    <input type="number" step="1" min="0" max="5" id="Rating" name="Rating" class="form-control" placeholder="Enter product rating" value="@((Model != null ? Model.Rating : 0))">
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="mainImage">Main Image</label>
+                    <input type="file" name="mainImage" id="mainImage" class="form-control" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="secondaryImages">Secondary Images</label>
+                    <input type="file" name="secondaryImages" id="secondaryImages" multiple class="form-control" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="videoFile">Video</label>
+                    <input type="file" name="videoFile" id="videoFile" class="form-control" accept="video/*">
+                </div>
+                <div class="form-group">
+                    <label for="nhaCungCapId">Nhà cung cấp</label>
+                    <select class="form-control" id="nhaCungCapId" name="nhaCungCapId">
+                        @foreach (var nhaCungCap in ViewBag.nhaCungCaps)
+                        {
+                            <option value="@nhaCungCap.Id">@nhaCungCap.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="theloai">Product Categories</label>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Categories
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+                            @foreach (var item in ViewBag.theloai)
+                            {
+                                <div class="dropdown-item">
+                                    <input type="checkbox" name="theloaii" value="@item.Id" class="form-check-input" id="categoryCheck_@item.Id">
+                                    <label class="form-check-label" for="categoryCheck_@item.Id">@item.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <button style="background-color: #00FF00; border:none" type="submit" class="btn btn-primary btn-submit">@((ViewBag.Id == 0) ? "Create" : "Update")</button>
+
+            </form>
+
+            <a asp-action="Index" class="btn btn-secondary btn-back">Back to List</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Initialize Bootstrap dropdown
+            $('#categoryDropdown').click(function () {
+                $('.dropdown-menu').toggleClass('show');
+            });
+        });
+    </script>
+}
+
+

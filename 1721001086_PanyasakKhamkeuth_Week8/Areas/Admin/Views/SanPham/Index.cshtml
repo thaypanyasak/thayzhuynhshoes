@@ -1,0 +1,227 @@
+﻿@model IEnumerable<SanPham>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <style>
+        header{
+            display:none;
+        }
+        footer{
+            display:none;
+        }
+        .container {
+            max-width: 1350px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+            .card img {
+                max-width: 100%;
+                height: auto;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+
+        .btn-action {
+            margin: 0 5px;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="text-center" style="padding-bottom:30px">ADMIN DASHBOARD</h2>
+    <div class="container">
+        <h2 class="mb-4">Product List</h2>
+
+        <!-- Search Bar -->
+        <div class="search-container mb-3">
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                <div class="input-group-append">
+                    <button onclick="searchProducts()" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- "Create New" button -->
+        <div>
+            <a href="@Url.Action("Upsert")" class="btn btn-primary" style="background-color: #00FF00; border:none">Create New</a>
+        </div>
+        
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card" data-id="@item.Id">
+                        <img src="@item.ImageUrl" class="card-img-top" alt="Product Image">
+                        <div class="card-body" data-id="@item.Id">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <p class="card-text">Price: @Html.DisplayFor(modelItem => item.Price)</p>
+                            <p class="card-text">Supplier: @Html.DisplayFor(modelItem => item.NhaCungCap.Name)</p>
+                            <p class="card-text">Rate: @Html.DisplayFor(modelItem => item.Rating)</p>
+                            <div class="btn-container">
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-info btn-action" style="background-color: #00FF00; border:none">Edit</a>
+                                <a href="@Url.Action("Detail", new { id = item.Id })" class="btn btn-success btn-action" style="background-color: #00FF00; border:none">Detail</a>
+
+                                <button style="background-color: #00FF00; border:none" class="btn btn-danger delete-product" data-product-id="@item.Id">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function searchProducts() {
+            var searchText = $('#searchInput').val().toLowerCase();
+            $('.card').each(function () {
+                var productText = $(this).text().toLowerCase();
+                if (productText.indexOf(searchText) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Bắt sự kiện click trên nút "Xóa"
+            $('.delete-product').click(function () {
+                var productId = $(this).data('product-id');
+                var cardToDelete = $(this).closest('.card'); // Find the parent card element
+
+                // Sử dụng SweetAlert 2 để hiển thị hộp thoại xác nhận
+                Swal.fire({
+                    title: 'Xác nhận xóa sản phẩm?',
+                    text: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gửi yêu cầu Ajax để xóa sản phẩm
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin/SanPham/Delete', // Điều chỉnh đường dẫn nếu cần
+                            data: { id: productId },
+                            success: function (data) {
+                                if (data.success) {
+                                    // Xóa sản phẩm thành công
+                                    Swal.fire('Đã xóa sản phẩm!', '', 'success');
+
+                                    // Xóa thẻ sản phẩm khỏi trang
+                                    cardToDelete.fadeOut(500, function () {
+                                        $(this).remove();
+                                    });
+                                } else {
+                                    Swal.fire('Lỗi', 'Đã xảy ra lỗi khi xóa sản phẩm.', 'error');
+                                }
+                            },
+                            error: function () {
+                                Swal.fire('Lỗi', 'Đã xảy ra lỗi khi thực hiện xóa sản phẩm.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+
+       
+    </script>
+
+
+</body>
+
+</html>
+<script>
+
+    function searchProducts() {
+        var searchText = $('#searchInput').val().toLowerCase();
+
+        // Hide all cards
+        $('.card').hide();
+
+        // Calculate relevance for each product based on search term
+        var products = [];
+        $('.card').each(function () {
+            var productText = $(this).text().toLowerCase();
+            var relevance = calculateRelevance(searchText, productText);
+            if (relevance > 0) {
+                products.push({ card: this, relevance: relevance });
+            }
+        });
+
+        // Sort products by relevance in descending order
+        products.sort(function (a, b) {
+            return b.relevance - a.relevance;
+        });
+
+        // Display the sorted products and scroll to the top
+        for (var i = 0; i < products.length; i++) {
+            $(products[i].card).show();
+        }
+
+        // Scroll to the top of the displayed products
+        $('.row')[0].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Helper function to calculate relevance based on search term
+    function calculateRelevance(searchTerm, productText) {
+        var words = searchTerm.split(' ');
+        var relevance = 0;
+
+        for (var i = 0; i < words.length; i++) {
+            if (productText.indexOf(words[i]) !== -1) {
+                relevance++;
+            }
+        }
+        return relevance;
+    }
+
+
+</script>
+

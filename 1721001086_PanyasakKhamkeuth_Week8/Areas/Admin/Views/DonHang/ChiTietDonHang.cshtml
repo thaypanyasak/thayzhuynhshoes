@@ -1,0 +1,106 @@
+﻿@model List<ChiTietHoaDon>
+@{
+    Layout = null; // Loại bỏ Layout cho trang này
+}
+<link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
+<link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="~/css/style.css" type="text/css">
+<link rel="stylesheet" href="~/css/font-end.css" type="text/css">
+<style>
+    .table-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+    }
+
+        .table th, .table td {
+            padding: 1rem;
+            text-align: center; /* Đổi text-align thành center */
+            border-bottom: 1px solid #dee2e6;
+        }
+
+    .product-image {
+        max-width: 100px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Optional: Style for hover effect on rows */
+    .table tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+</style>
+
+
+
+<h2>Chi tiết đơn hàng</h2>
+<br />
+<div class="container-fuild table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Hình ảnh</th>
+                <th class="text-center">Sản phẩm</th>
+                <th class="text-center">Giá</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Tổng giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center"><img src="@item.SanPham.ImageUrl" alt="@item.SanPham.Name" class="product-image" /></td>
+                    <td class="text-center">@item.SanPham.Name</td>
+                    <td class="text-center">@String.Format("{0:0,0}", item.SanPham.Price) VND</td>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-center">@String.Format("{0:0,0}", item.SanPham.Price * item.Quantity) VND</td>
+                    
+                </tr>
+              
+            }
+            <tr class="total-row">
+                <td colspan="4" class="text-right">Tổng giá:</td>
+                <td class="text-center">
+                    @{
+                        // Calculate the total sum of all product prices
+                        var totalSum = Model.Sum(item => item.ProductPrice * item.Quantity);
+                    }
+                    @String.Format("{0:0,0}", totalSum) VND
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<a asp-action="Index" class="btn btn-primary" style="background-color: #00FF00; border:none" >Quay lại</a>
+
+
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.nice-select.min.js"></script>
+<script src="~/js/jquery.nicescroll.min.js"></script>
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+<script src="~/js/jquery.countdown.min.js"></script>
+<script src="~/js/jquery.slicknav.js"></script>
+<script src="~/js/mixitup.min.js"></script>
+<script src="~/js/owl.carousel.min.js"></script>
+<script src="~/js/main.js"></script>
+<script src="~/js/font-end.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>

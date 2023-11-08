@@ -1,0 +1,209 @@
+﻿@model GioHangViewModel
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        Section {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .card {
+            border: solid 1px #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo img {
+            width: 200px;
+            height: auto;
+        }
+
+        .invoice {
+            padding: 20px;
+        }
+
+            .invoice h5 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+        .payment table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            .payment table td {
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+            }
+
+                .payment table td span {
+                    font-weight: bold;
+                }
+
+        .product table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .product table tr td {
+                padding: 10px;
+                vertical-align: top;
+                border-bottom: 1px solid #ccc;
+            }
+
+        .product img {
+            width: 90px;
+            height: auto;
+        }
+
+        .product-qty span {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .totals table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .totals table tr td {
+                padding: 10px;
+                text-align: right;
+                border-bottom: 1px solid #ccc;
+                font-size: 14px;
+            }
+
+            .totals table tr:last-child td {
+                font-weight: bold;
+            }
+
+        .footer2 span {
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="text-left logo p-4">
+                        <img src="/img/logo/logo/logo.png" alt="Logo">
+                    </div>
+                    <div class="invoice p-4">
+                        <h5>Your Order Confirmed!</h5>
+                        <span class="font-weight-bold d-block mb-4">Hello, @Model.HoaDon.Name</span>
+
+                        <!-- Payment Details -->
+                        <div class="payment">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="text-muted">Order No</span>
+                                        </td>
+                                        <td>
+                                            <span>@Model.HoaDon.OrderNumber</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="text-muted">Address</span>
+                                        </td>
+                                        <td>
+                                            <span>@Model.HoaDon.Address</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="text-muted">Order Date</span>
+                                        </td>
+                                        <td>
+                                            <span>@Model.HoaDon.OrderDate.ToShortDateString()</span>
+                                        </td>
+                                    </tr>
+                                    <!-- Add other payment details here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="product">
+                            <table>
+                                <tbody>
+                                    @foreach (var item in Model.DsGioHang)
+                                    {
+                                        <tr>
+                                            <td width="30%">
+                                                <img src="@item.SanPham.ImageUrl" alt="Product Image">
+                                            </td>
+                                            <td width="30%">
+                                                <span class="font-weight-bold">@item.SanPham.Name</span>
+                                                <div class="product-qty">
+                                                    <span class="d-block">Quantity: @item.Quantity</span>
+                                                    <span class="d-block">Size: @item.Size</span>
+                                                </div>
+                                            </td>
+                                            <td width="40%">
+                                                <span>@String.Format("{0:0,0}", item.ProductPrice) VND</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Totals -->
+                        <div class="totals">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="text-muted">Shipping Fee</span>
+                                        </td>
+                                        <td>
+                                            <span>@String.Format("{0:0,0}", Model.ShippingFee) VND</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="text-muted">Tax Amount</span>
+                                        </td>
+                                        <td>
+                                            <span>@String.Format("{0:0,0}", Model.TaxAmount) VND</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="text-muted">Total</span>
+                                        </td>
+                                        <td>
+                                            <span>@String.Format("{0:0,0}", Model.HoaDon.Total) VND</span>
+                                        </td>
+                                    </tr>
+                                    <!-- Add other totals here (ShippingFee, TaxAmount, Discount, etc.) -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <p class="mt-4">We will be sending a shipping confirmation email when the item is shipped successfully!</p>
+                        <p class="font-weight-bold mb-0">Thanks for shopping with us!</p>
+                        <span class="footer2">THAY HUYNH BALLER</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>
